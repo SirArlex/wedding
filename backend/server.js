@@ -20,26 +20,16 @@ app.set('trust proxy', 1);
 app.use(helmet());
 
 // ── CORS ─────────────────────────────────────────────────────
-// Always allow the production frontend plus localhost for dev.
-// We list the production URL explicitly so it works even if the
-// CLIENT_ORIGIN env var is missing or misconfigured on Vercel.
-const ALLOWED_ORIGINS = [
-  'https://wedding-client-tau.vercel.app',
-  'http://localhost:5173',
-  'http://localhost:5000',
-  ...(process.env.CLIENT_ORIGIN
-    ? process.env.CLIENT_ORIGIN.split(',').map((o) => o.trim())
-    : []),
-];
+const allowedOrigins = (process.env.CLIENT_ORIGIN || 'http://localhost:5173')
+  .split(',')
+  .map((o) => o.trim());
 
 app.use(
   cors({
     origin: (origin, callback) => {
       // Allow requests with no origin (curl, Postman, server-to-server)
       if (!origin) return callback(null, true);
-      if (ALLOWED_ORIGINS.includes(origin)) return callback(null, true);
-      console.warn(`[cors] blocked origin: ${origin}`);
-      callback(new Error(`CORS: origin ${origin} not allowed`));
+      callback(null, allowedOrigins.includes(origin));
     },
     credentials: true,
   })
