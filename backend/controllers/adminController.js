@@ -103,13 +103,13 @@ export async function getDashboard(req, res, next) {
         },
         gifts: {
           totalAmount: donations.totalAmount,
-          totalAmountFormatted: `₦${(donations.totalAmount / 100).toLocaleString('en-NG', { minimumFractionDigits: 2 })}`,
+          totalAmountFormatted: `NGN ${(donations.totalAmount / 100).toLocaleString('en-NG', { minimumFractionDigits: 2 })}`,
           totalDonors: donations.totalDonors,
         },
         recentDonations: recentDonations.map((d) => ({
           id: d._id,
           donorName: d.anonymous ? 'Anonymous' : d.donorName,
-          amount: `₦${(d.amount / 100).toLocaleString('en-NG', { minimumFractionDigits: 2 })}`,
+          amount: `NGN ${(d.amount / 100).toLocaleString('en-NG', { minimumFractionDigits: 2 })}`,
           status: d.status,
           createdAt: d.createdAt,
         })),
@@ -211,7 +211,7 @@ export async function getDonations(req, res, next) {
       return {
         ...d,
         email: maskedEmail,
-        amountFormatted: `₦${(d.amount / 100).toLocaleString('en-NG', { minimumFractionDigits: 2 })}`,
+        amountFormatted: `NGN ${(d.amount / 100).toLocaleString('en-NG', { minimumFractionDigits: 2 })}`,
       };
     });
 
@@ -233,7 +233,7 @@ export async function exportDonations(req, res, next) {
 
     const headers = [
       'Donor Name',
-      'Amount (₦)',
+      'Amount (NGN )',
       'Status',
       'Reference',
       'Message',

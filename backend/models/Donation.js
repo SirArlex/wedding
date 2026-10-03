@@ -25,11 +25,11 @@ const donationSchema = new mongoose.Schema(
       match: [/^[^\s@]+@[^\s@]+\.[^\s@]+$/, 'Invalid email address'],
     },
 
-    // Amount in kobo (Paystack) — integer, e.g. 5000 = ₦50.00
+    // Amount in kobo (Paystack) — integer, e.g. 5000 = NGN 50.00
     amount: {
       type: Number,
       required: true,
-      min: [10000, 'Minimum donation is ₦100'],
+      min: [10000, 'Minimum donation is NGN 100'],
     },
     currency: {
       type: String,

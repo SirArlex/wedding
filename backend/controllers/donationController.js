@@ -19,7 +19,7 @@ function sanitize(str) {
 
 // Kobo → formatted Naira string (for display)
 function formatAmount(kobo) {
-  return `₦${(kobo / 100).toLocaleString('en-NG', { minimumFractionDigits: 2 })}`;
+  return `NGN ${(kobo / 100).toLocaleString('en-NG', { minimumFractionDigits: 2 })}`;
 }
 
 /**
@@ -54,7 +54,7 @@ export async function initiateDonation(req, res, next) {
     }
     const parsedAmount = Number(amountNaira);
     if (!parsedAmount || parsedAmount < 100 || !Number.isFinite(parsedAmount)) {
-      return res.status(400).json({ success: false, message: 'Minimum donation is ₦100.' });
+      return res.status(400).json({ success: false, message: 'Minimum donation is NGN 100.' });
     }
     const amountKobo = Math.round(parsedAmount * 100);
 
@@ -373,7 +373,7 @@ export async function getDonationSummary(req, res, next) {
 
     await connectDatabase();
     if (!isDatabaseConnected()) {
-      return res.json({ success: true, data: { total: 0, count: 0, formatted: '₦0.00' } });
+      return res.json({ success: true, data: { total: 0, count: 0, formatted: 'NGN 0.00' } });
     }
 
     const wedding = await Wedding.findOne({ slug: sanitize(slug) }).lean();
