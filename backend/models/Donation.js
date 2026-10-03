@@ -25,7 +25,7 @@ const donationSchema = new mongoose.Schema(
       match: [/^[^\s@]+@[^\s@]+\.[^\s@]+$/, 'Invalid email address'],
     },
 
-    // Amount in kobo (Paystack) — integer, e.g. 5000 = NGN 50.00
+    // Amount in kobo (Paystack) -- integer, e.g. 5000 = NGN 50.00
     amount: {
       type: Number,
       required: true,
@@ -50,7 +50,7 @@ const donationSchema = new mongoose.Schema(
       default: false,
     },
 
-    // Paystack reference — unique per transaction
+    // Paystack reference -- unique per transaction
     reference: {
       type: String,
       required: true,
@@ -58,7 +58,7 @@ const donationSchema = new mongoose.Schema(
       trim: true,
     },
 
-    // Payment status — only 'success' means money was received
+    // Payment status -- only 'success' means money was received
     status: {
       type: String,
       enum: ['pending', 'success', 'failed', 'abandoned'],
@@ -78,7 +78,7 @@ const donationSchema = new mongoose.Schema(
 
 // Efficient lookups by weddingId + status for the Gift Wall
 donationSchema.index({ weddingId: 1, status: 1 });
-// Note: reference already has a unique index from the field definition above — no extra index needed.
+// Note: reference already has a unique index from the field definition above -- no extra index needed.
 
 const Donation = mongoose.model('Donation', donationSchema);
 export default Donation;

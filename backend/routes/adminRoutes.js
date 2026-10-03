@@ -21,7 +21,7 @@ import { requireAuth, requireWeddingAccess } from '../middleware/auth.js';
 
 const router = Router();
 
-// ── Multer — memory storage, 10 MB limit, images only ────────────────────────
+// -- Multer -- memory storage, 10 MB limit, images only ------------------------
 const upload = multer({
   storage: multer.memoryStorage(),
   limits: { fileSize: 10 * 1024 * 1024 },
@@ -34,19 +34,19 @@ const upload = multer({
   },
 });
 
-// ── Auth rate limiter ─────────────────────────────────────────────────────────
+// -- Auth rate limiter ---------------------------------------------------------
 const loginLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 min
   max: 10,
   message: { success: false, message: 'Too many login attempts. Try again in 15 minutes.' },
 });
 
-// ── Public auth routes ────────────────────────────────────────────────────────
+// -- Public auth routes --------------------------------------------------------
 router.post('/login', loginLimiter, login);
 router.post('/logout', logout);
 router.get('/me', requireAuth, me);
 
-// ── Protected routes (all require auth + wedding access check) ────────────────
+// -- Protected routes (all require auth + wedding access check) ----------------
 const protect = [requireAuth, requireWeddingAccess];
 
 router.get('/dashboard', ...protect, getDashboard);

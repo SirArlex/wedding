@@ -3,7 +3,7 @@
  *
  * Usage:  npm run seed
  *
- * Requires MONGODB_URI to be set in .env. Safe to run repeatedly —
+ * Requires MONGODB_URI to be set in .env. Safe to run repeatedly --
  * it upserts by slug, so it won't create duplicates.
  */
 import 'dotenv/config';

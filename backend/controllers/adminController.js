@@ -6,7 +6,7 @@ import GalleryImage from '../models/GalleryImage.js';
 import { connectDatabase } from '../config/database.js';
 import { v2 as cloudinary } from 'cloudinary';
 
-// ─── Cloudinary config (called lazily) ──────────────────────────────────────
+// --- Cloudinary config (called lazily) --------------------------------------
 function configureCloudinary() {
   cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -16,7 +16,7 @@ function configureCloudinary() {
   });
 }
 
-// ─── Helpers ─────────────────────────────────────────────────────────────────
+// --- Helpers -----------------------------------------------------------------
 function sanitizeStr(s) {
   if (typeof s !== 'string') return s;
   return s.replace(/<[^>]*>/g, '').trim();
@@ -33,7 +33,7 @@ function toCSV(headers, rows) {
   return lines.join('\r\n');
 }
 
-// ─── DASHBOARD ───────────────────────────────────────────────────────────────
+// --- DASHBOARD ---------------------------------------------------------------
 
 /**
  * GET /api/admin/dashboard
@@ -127,7 +127,7 @@ export async function getDashboard(req, res, next) {
   }
 }
 
-// ─── RSVPs ────────────────────────────────────────────────────────────────────
+// --- RSVPs --------------------------------------------------------------------
 
 /**
  * GET /api/admin/rsvps?page=1&limit=50&attending=yes
@@ -155,7 +155,7 @@ export async function getRsvps(req, res, next) {
 }
 
 /**
- * GET /api/admin/rsvps/export — CSV download
+ * GET /api/admin/rsvps/export -- CSV download
  */
 export async function exportRsvps(req, res, next) {
   try {
@@ -180,7 +180,7 @@ export async function exportRsvps(req, res, next) {
   }
 }
 
-// ─── DONATIONS ────────────────────────────────────────────────────────────────
+// --- DONATIONS ----------------------------------------------------------------
 
 /**
  * GET /api/admin/donations?page=1&limit=50&status=success
@@ -222,7 +222,7 @@ export async function getDonations(req, res, next) {
 }
 
 /**
- * GET /api/admin/donations/export — CSV download
+ * GET /api/admin/donations/export -- CSV download
  */
 export async function exportDonations(req, res, next) {
   try {
@@ -260,7 +260,7 @@ export async function exportDonations(req, res, next) {
   }
 }
 
-// ─── SETTINGS ─────────────────────────────────────────────────────────────────
+// --- SETTINGS -----------------------------------------------------------------
 
 /**
  * GET /api/admin/settings
@@ -310,7 +310,7 @@ export async function updateSettings(req, res, next) {
   }
 }
 
-// ─── GALLERY ──────────────────────────────────────────────────────────────────
+// --- GALLERY ------------------------------------------------------------------
 
 /**
  * GET /api/admin/gallery
@@ -329,7 +329,7 @@ export async function getGallery(req, res, next) {
 
 /**
  * POST /api/admin/gallery/upload
- * Body: multipart/form-data — file field: "image"
+ * Body: multipart/form-data -- file field: "image"
  */
 export async function uploadImage(req, res, next) {
   try {

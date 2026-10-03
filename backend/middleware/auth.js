@@ -18,7 +18,7 @@ export function signToken(adminId, weddingId) {
 }
 
 /**
- * Express middleware — verifies the JWT from the Authorization header
+ * Express middleware -- verifies the JWT from the Authorization header
  * or from an httpOnly cookie, then attaches `req.admin` and `req.weddingId`.
  */
 export async function requireAuth(req, res, next) {
@@ -57,7 +57,7 @@ export async function requireAuth(req, res, next) {
 }
 
 /**
- * Middleware — confirms the authenticated admin has access to
+ * Middleware -- confirms the authenticated admin has access to
  * the weddingId being requested (prevents cross-tenant data access).
  *
  * Expects req.admin and req.weddingId to be set by requireAuth first.

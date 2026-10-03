@@ -37,7 +37,7 @@ const galleryImageSchema = new Schema(
 );
 
 /**
- * The Wedding document — the single source of truth for one wedding.
+ * The Wedding document -- the single source of truth for one wedding.
  *
  * `slug` is unique and will become the multi-tenant key in a later phase
  * (e.g. /w/sarah-and-james). For Phase 1 there is one development wedding.

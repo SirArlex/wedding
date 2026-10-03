@@ -7,7 +7,7 @@ const galleryImageSchema = new mongoose.Schema(
       ref: 'Wedding',
       required: true,
     },
-    // Cloudinary public_id — used to delete from Cloudinary
+    // Cloudinary public_id -- used to delete from Cloudinary
     publicId: {
       type: String,
       required: true,

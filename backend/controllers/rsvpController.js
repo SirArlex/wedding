@@ -31,7 +31,7 @@ export async function submitRsvp(req, res, next) {
 
     const { weddingSlug, fullName, email, attending, guestCount, message } = req.body;
 
-    // ── Basic server-side validation ─────────────────────────
+    // -- Basic server-side validation -------------------------
     if (!weddingSlug || typeof weddingSlug !== 'string') {
       return res.status(400).json({ success: false, message: 'Wedding identifier is required.' });
     }
@@ -49,13 +49,13 @@ export async function submitRsvp(req, res, next) {
       return res.status(400).json({ success: false, message: 'Guest count must be between 1 and 10.' });
     }
 
-    // ── Find the wedding ──────────────────────────────────────
+    // -- Find the wedding --------------------------------------
     const wedding = await Wedding.findOne({ slug: sanitize(weddingSlug) }).lean();
     if (!wedding) {
       return res.status(404).json({ success: false, message: 'Wedding not found.' });
     }
 
-    // ── Duplicate check (same email + wedding) ────────────────
+    // -- Duplicate check (same email + wedding) ----------------
     const existing = await Rsvp.findOne({
       email: email.toLowerCase().trim(),
       weddingId: wedding._id,
@@ -69,7 +69,7 @@ export async function submitRsvp(req, res, next) {
       });
     }
 
-    // ── Create RSVP ───────────────────────────────────────────
+    // -- Create RSVP -------------------------------------------
     const rsvp = await Rsvp.create({
       weddingId: wedding._id,
       fullName: sanitize(fullName).slice(0, 120),

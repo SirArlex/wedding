@@ -22,7 +22,7 @@ router.post('/initiate', initiateDonation);
 // Verify a transaction after Paystack redirects back
 router.get('/verify/:reference', verifyDonation);
 
-// Paystack webhook — MUST receive raw body for HMAC verification.
+// Paystack webhook -- MUST receive raw body for HMAC verification.
 // We mount it with express.raw() here, scoped only to this route,
 // so the rest of the app continues to use express.json().
 router.post(

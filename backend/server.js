@@ -15,13 +15,13 @@ import { notFound, errorHandler } from './middleware/errorHandler.js';
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// ── Trust Vercel's proxy (required for express-rate-limit) ────────────────────
+// -- Trust Vercel's proxy (required for express-rate-limit) --------------------
 app.set('trust proxy', 1);
 
-// ── Security headers ──────────────────────────────────────────────────────────
+// -- Security headers ----------------------------------------------------------
 app.use(helmet());
 
-// ── CORS ──────────────────────────────────────────────────────────────────────
+// -- CORS ----------------------------------------------------------------------
 const allowedOrigins = (process.env.CLIENT_ORIGIN || 'http://localhost:5173')
   .split(',')
   .map((o) => o.trim());
@@ -36,10 +36,10 @@ app.use(
   })
 );
 
-// ── Cookie parser (needed for httpOnly admin session cookie) ──────────────────
+// -- Cookie parser (needed for httpOnly admin session cookie) ------------------
 app.use(cookieParser());
 
-// ── Rate limiting ─────────────────────────────────────────────────────────────
+// -- Rate limiting -------------------------------------------------------------
 app.use(
   '/api',
   rateLimit({
@@ -73,12 +73,12 @@ app.use(
   })
 );
 
-// ── Body parsing ──────────────────────────────────────────────────────────────
-// Paystack webhook must receive raw body — mounted first in donationRoutes.js
+// -- Body parsing --------------------------------------------------------------
+// Paystack webhook must receive raw body -- mounted first in donationRoutes.js
 app.use(express.json({ limit: '2mb' }));
 app.use(express.urlencoded({ extended: true, limit: '2mb' }));
 
-// ── Routes ────────────────────────────────────────────────────────────────────
+// -- Routes --------------------------------------------------------------------
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', time: new Date().toISOString() });
 });
@@ -88,11 +88,11 @@ app.use('/api/rsvp', rsvpRoutes);
 app.use('/api/donations', donationRoutes);
 app.use('/api/admin', adminRoutes);
 
-// ── Error handling ────────────────────────────────────────────────────────────
+// -- Error handling ------------------------------------------------------------
 app.use(notFound);
 app.use(errorHandler);
 
-// ── Start ─────────────────────────────────────────────────────────────────────
+// -- Start ---------------------------------------------------------------------
 async function start() {
   await connectDatabase();
   app.listen(PORT, () => {

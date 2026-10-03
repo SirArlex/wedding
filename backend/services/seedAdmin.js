@@ -48,12 +48,12 @@ async function run() {
     weddingIds: [wedding._id],
   });
 
-  console.log(`[seedAdmin] ✓ Admin created:`);
+  console.log(`[seedAdmin] OK Admin created:`);
   console.log(`  Email:    ${admin.email}`);
   console.log(`  Password: ${ADMIN_PASSWORD}`);
   console.log(`  Wedding:  ${wedding.slug} (${wedding._id})`);
   console.log('');
-  console.log('  ⚠️  Change this password immediately after first login!');
+  console.log('    Change this password immediately after first login!');
 
   await mongoose.disconnect();
 }

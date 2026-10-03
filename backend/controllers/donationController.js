@@ -17,7 +17,7 @@ function sanitize(str) {
     .trim();
 }
 
-// Kobo → formatted Naira string (for display)
+// Kobo -> formatted Naira string (for display)
 function formatAmount(kobo) {
   return `NGN ${(kobo / 100).toLocaleString('en-NG', { minimumFractionDigits: 2 })}`;
 }
@@ -42,7 +42,7 @@ export async function initiateDonation(req, res, next) {
 
     const { weddingSlug, donorName, email, amountNaira, message, anonymous } = req.body;
 
-    // ── Validate ──────────────────────────────────────────────
+    // -- Validate ----------------------------------------------
     if (!weddingSlug || typeof weddingSlug !== 'string') {
       return res.status(400).json({ success: false, message: 'Wedding identifier is required.' });
     }
@@ -58,16 +58,16 @@ export async function initiateDonation(req, res, next) {
     }
     const amountKobo = Math.round(parsedAmount * 100);
 
-    // ── Find the wedding ──────────────────────────────────────
+    // -- Find the wedding --------------------------------------
     const wedding = await Wedding.findOne({ slug: sanitize(weddingSlug) }).lean();
     if (!wedding) {
       return res.status(404).json({ success: false, message: 'Wedding not found.' });
     }
 
-    // ── Generate unique Paystack reference ─────────────────────
+    // -- Generate unique Paystack reference ---------------------
     const reference = `wed_${wedding._id}_${Date.now()}_${crypto.randomBytes(6).toString('hex')}`;
 
-    // ── Create pending donation in DB ─────────────────────────
+    // -- Create pending donation in DB -------------------------
     await Donation.create({
       weddingId: wedding._id,
       donorName: sanitize(donorName).slice(0, 120),
@@ -80,7 +80,7 @@ export async function initiateDonation(req, res, next) {
       status: 'pending',
     });
 
-    // ── Call Paystack Initialize Transaction ──────────────────
+    // -- Call Paystack Initialize Transaction ------------------
     const paystackSecretKey = process.env.PAYSTACK_SECRET_KEY;
     if (!paystackSecretKey) {
       return res.status(503).json({
@@ -144,7 +144,7 @@ export async function initiateDonation(req, res, next) {
  * GET /api/donations/verify/:reference
  *
  * Called by the frontend after Paystack redirects back.
- * We verify with Paystack server-to-server — NEVER trust the frontend alone.
+ * We verify with Paystack server-to-server -- NEVER trust the frontend alone.
  * Updates the Donation record only if Paystack confirms success.
  */
 export async function verifyDonation(req, res, next) {
@@ -154,13 +154,13 @@ export async function verifyDonation(req, res, next) {
       return res.status(400).json({ success: false, message: 'Reference is required.' });
     }
 
-    // ── Look up the pending donation ──────────────────────────
+    // -- Look up the pending donation --------------------------
     const donation = await Donation.findOne({ reference: reference.trim() });
     if (!donation) {
       return res.status(404).json({ success: false, message: 'Donation record not found.' });
     }
 
-    // Already verified — idempotent response
+    // Already verified -- idempotent response
     if (donation.status === 'success') {
       return res.json({
         success: true,
@@ -178,7 +178,7 @@ export async function verifyDonation(req, res, next) {
       });
     }
 
-    // ── Server-to-server verification with Paystack ───────────
+    // -- Server-to-server verification with Paystack -----------
     const paystackRes = await axios.get(
       `https://api.paystack.co/transaction/verify/${encodeURIComponent(reference.trim())}`,
       {
@@ -193,7 +193,7 @@ export async function verifyDonation(req, res, next) {
       return res.status(502).json({ success: false, message: 'Could not verify transaction.' });
     }
 
-    // ── Only mark success when Paystack confirms it ───────────
+    // -- Only mark success when Paystack confirms it -----------
     if (tx.status === 'success') {
       // Extra guard: verify the amount matches what we stored
       if (tx.amount !== donation.amount) {
@@ -250,7 +250,7 @@ export async function paystackWebhook(req, res, next) {
       return res.sendStatus(500);
     }
 
-    // ── Signature verification ────────────────────────────────
+    // -- Signature verification --------------------------------
     const signature = req.headers['x-paystack-signature'];
     if (!signature) {
       return res.sendStatus(400);
@@ -266,7 +266,7 @@ export async function paystackWebhook(req, res, next) {
       return res.sendStatus(401);
     }
 
-    // ── Parse the event ───────────────────────────────────────
+    // -- Parse the event ---------------------------------------
     let event;
     try {
       event = JSON.parse(req.body.toString());
@@ -277,7 +277,7 @@ export async function paystackWebhook(req, res, next) {
     // Acknowledge immediately (Paystack requires 200 within 5 s)
     res.sendStatus(200);
 
-    // ── Handle charge.success ─────────────────────────────────
+    // -- Handle charge.success ---------------------------------
     if (event.event === 'charge.success') {
       const tx = event.data;
       if (!tx?.reference) return;
@@ -298,7 +298,7 @@ export async function paystackWebhook(req, res, next) {
       console.log(`[webhook] donation ${tx.reference} marked success`);
     }
 
-    // Other events (charge.failed, etc.) — update status
+    // Other events (charge.failed, etc.) -- update status
     if (event.event === 'charge.failed') {
       const tx = event.data;
       if (!tx?.reference) return;
@@ -309,7 +309,7 @@ export async function paystackWebhook(req, res, next) {
     }
   } catch (err) {
     console.error('[webhook] error:', err);
-    // Don't call next(err) — we already sent 200
+    // Don't call next(err) -- we already sent 200
   }
 }
 
@@ -342,7 +342,7 @@ export async function getGiftWall(req, res, next) {
       .select('-email -__v')
       .lean();
 
-    // Redact email entirely — it's excluded by the projection above.
+    // Redact email entirely -- it's excluded by the projection above.
     // Also honour the anonymous flag on the name.
     const wall = donations.map((d) => ({
       id: d._id,

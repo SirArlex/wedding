@@ -16,7 +16,7 @@ export async function getWedding(req, res, next) {
       if (wedding) {
         return res.json({ source: 'database', data: wedding });
       }
-      // DB is up but empty — fall through to seed so the site still renders.
+      // DB is up but empty -- fall through to seed so the site still renders.
     }
 
     return res.json({ source: 'seed', data: developmentWedding });
