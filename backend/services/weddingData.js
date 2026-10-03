@@ -19,7 +19,7 @@ export const developmentWedding = {
 
   weddingDate: 'Saturday, the Fourteenth of June, 2025',
   weddingDateISO: '2025-06-14',
-  location: 'Val d'Orcia, Tuscany',
+  location: "Val d'Orcia, Tuscany",
 
   hero: {
     kicker: 'The Wedding Of',
@@ -42,7 +42,7 @@ export const developmentWedding = {
   ceremony: {
     title: 'The Ceremony',
     date: 'Saturday, June 14, 2025',
-    time: 'Four o'clock in the afternoon',
+    time: "Four o'clock in the afternoon",
     venue: 'Chapel of San Biagio',
     address: 'Via di San Biagio, Montepulciano, Tuscany',
     mapUrl: 'https://maps.google.com/?q=Tempio+di+San+Biagio+Montepulciano',
@@ -52,7 +52,7 @@ export const developmentWedding = {
   reception: {
     title: 'The Reception',
     date: 'Saturday, June 14, 2025',
-    time: 'Six o'clock in the evening until late',
+    time: "Six o'clock in the evening until late",
     venue: 'Villa Cicolina',
     address: 'Via Provinciale, Montepulciano, Tuscany',
     mapUrl: 'https://maps.google.com/?q=Villa+Cicolina+Montepulciano',
