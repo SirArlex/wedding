@@ -17,13 +17,17 @@ const PORT = process.env.PORT || 5000;
 app.use(helmet());
 
 // ── CORS ─────────────────────────────────────────────────────
-const allowedOrigins = (process.env.CLIENT_ORIGIN || 'http://localhost:5173')
-  .split(',')
-  .map((o) => o.trim());
-
 app.use(
   cors({
-    origin: allowedOrigins,
+    origin: (origin, callback) => {
+      // Allow requests with no origin (curl, Postman, server-to-server)
+      if (!origin) return callback(null, true);
+      const allowed = (process.env.CLIENT_ORIGIN || 'http://localhost:5173')
+        .split(',')
+        .map((o) => o.trim());
+      if (allowed.includes(origin)) return callback(null, true);
+      callback(new Error(`CORS: origin ${origin} not allowed`));
+    },
     credentials: true,
   })
 );
