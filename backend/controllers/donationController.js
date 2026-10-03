@@ -1,14 +1,20 @@
 import crypto from 'crypto';
 import axios from 'axios';
-import sanitizeHtml from 'sanitize-html';
 import Donation from '../models/Donation.js';
 import Wedding from '../models/Wedding.js';
 import { isDatabaseConnected } from '../config/database.js';
 
-// Strip all HTML — user-supplied strings only
+// Strip all HTML tags and decode common entities from user-supplied strings
 function sanitize(str) {
   if (typeof str !== 'string') return str;
-  return sanitizeHtml(str, { allowedTags: [], allowedAttributes: {} }).trim();
+  return str
+    .replace(/<[^>]*>/g, '')           // strip HTML tags
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&amp;/g, '&')
+    .replace(/&quot;/g, '"')
+    .replace(/&#x27;/g, "'")
+    .trim();
 }
 
 // Kobo → formatted Naira string (for display)
