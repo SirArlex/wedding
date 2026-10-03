@@ -67,7 +67,7 @@ export default function Gift() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          weddingSlug: wedding.slug || 'amara-elliot',
+          weddingSlug: wedding.slug || 'praise-and-bright',
           donorName: name,
           email,
           amountNaira: effectiveAmount,
@@ -259,7 +259,7 @@ export default function Gift() {
       </Section>
 
       {/* Gift Wall — shown beneath the form */}
-      <GiftWall weddingSlug={wedding.slug || 'amara-elliot'} />
+      <GiftWall weddingSlug={wedding.slug || 'praise-and-bright'} />
     </>
   );
 }

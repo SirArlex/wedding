@@ -63,7 +63,7 @@ export default function Rsvp() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          weddingSlug: wedding.slug || 'amara-elliot',
+          weddingSlug: wedding.slug || 'praise-and-bright',
           fullName: form.name,
           email: form.email,
           attending: form.attending,

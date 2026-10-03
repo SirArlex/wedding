@@ -32,17 +32,14 @@ export async function connectDatabase() {
 
   try {
     mongoose.set('strictQuery', true);
-    console.log('[db] Attempting MongoDB connection...');
-    console.log('[db] URI prefix:', uri.substring(0, 20) + '...');
     await mongoose.connect(uri, {
       serverSelectionTimeoutMS: 8000,
       bufferCommands: false,
     });
-    console.log('[db] Connected to MongoDB successfully');
+    console.log('[db] Connected to MongoDB');
     return true;
   } catch (error) {
-    console.error('[db] MongoDB connection FAILED:', error.message);
-    console.error('[db] Error name:', error.name);
+    console.warn(`[db] Could not connect to MongoDB: ${error.message}`);
     return false;
   }
 }

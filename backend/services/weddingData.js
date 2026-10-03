@@ -12,14 +12,14 @@
  * `src` / `image` strings below — the structure stays identical.
  */
 export const developmentWedding = {
-  slug: 'amara-and-elliot',
+  slug: ‘praise-and-bright’,
 
-  brideName: 'Amara',
-  groomName: 'Elliot',
+  brideName: ‘Praise’,
+  groomName: ‘Bright’,
 
-  weddingDate: 'Saturday, the Fourteenth of June, 2025',
-  weddingDateISO: '2025-06-14',
-  location: 'Val d’Orcia, Tuscany',
+  weddingDate: ‘Saturday, the Fourteenth of June, 2025’,
+  weddingDateISO: ‘2025-06-14’,
+  location: ‘Val d’Orcia, Tuscany’,
 
   hero: {
     kicker: 'The Wedding Of',
@@ -31,7 +31,7 @@ export const developmentWedding = {
     intro: 'How two paths became one.',
     paragraphs: [
       'We met on an unremarkable Tuesday in a bookshop that no longer exists, both reaching for the last copy of the same novel. Neither of us would let go. We settled it over coffee that lasted until the shop closed.',
-      'Seven years, three apartments, one small and devoted dog, and more shared cups of coffee than we could ever count later, Elliot proposed in the same quiet corner where we first argued over a book — this time with a ring, and no argument at all.',
+      'Seven years, three apartments, one small and devoted dog, and more shared cups of coffee than we could ever count later, Bright proposed in the same quiet corner where we first argued over a book — this time with a ring, and no argument at all.',
       'We would be honoured to have you with us as we begin the next chapter, under the Tuscan sun, surrounded by the people who made our story possible.',
     ],
     quote: 'To the world you may be one person, but to one person you are the world.',
