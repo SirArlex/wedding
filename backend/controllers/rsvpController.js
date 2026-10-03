@@ -1,6 +1,6 @@
 import Rsvp from '../models/Rsvp.js';
 import Wedding from '../models/Wedding.js';
-import { isDatabaseConnected } from '../config/database.js';
+import { connectDatabase, isDatabaseConnected } from '../config/database.js';
 
 // Strip all HTML tags and decode common entities from user-supplied strings
 function sanitize(str) {
@@ -21,6 +21,7 @@ function sanitize(str) {
  */
 export async function submitRsvp(req, res, next) {
   try {
+    await connectDatabase();
     if (!isDatabaseConnected()) {
       return res.status(503).json({
         success: false,

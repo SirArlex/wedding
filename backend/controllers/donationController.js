@@ -2,7 +2,7 @@ import crypto from 'crypto';
 import axios from 'axios';
 import Donation from '../models/Donation.js';
 import Wedding from '../models/Wedding.js';
-import { isDatabaseConnected } from '../config/database.js';
+import { connectDatabase, isDatabaseConnected } from '../config/database.js';
 
 // Strip all HTML tags and decode common entities from user-supplied strings
 function sanitize(str) {
@@ -32,6 +32,7 @@ function formatAmount(kobo) {
  */
 export async function initiateDonation(req, res, next) {
   try {
+    await connectDatabase();
     if (!isDatabaseConnected()) {
       return res.status(503).json({
         success: false,
@@ -325,6 +326,7 @@ export async function getGiftWall(req, res, next) {
       return res.status(400).json({ success: false, message: 'Wedding slug is required.' });
     }
 
+    await connectDatabase();
     if (!isDatabaseConnected()) {
       return res.json({ success: true, data: [] });
     }
@@ -369,6 +371,7 @@ export async function getDonationSummary(req, res, next) {
       return res.status(400).json({ success: false, message: 'Wedding slug is required.' });
     }
 
+    await connectDatabase();
     if (!isDatabaseConnected()) {
       return res.json({ success: true, data: { total: 0, count: 0, formatted: '₦0.00' } });
     }

@@ -14,25 +14,32 @@ export async function connectDatabase() {
   const uri = process.env.MONGODB_URI;
 
   if (!uri) {
-    console.warn(
-      '[db] No MONGODB_URI set — running without a database. ' +
-        'The API will serve in-memory seed data.'
-    );
+    console.warn('[db] No MONGODB_URI set — running without a database.');
     return false;
+  }
+
+  // Already connected — reuse the connection (important for Vercel serverless
+  // where the module may be cached across invocations)
+  if (mongoose.connection.readyState === 1) {
+    return true;
+  }
+
+  // Connection in progress — wait for it
+  if (mongoose.connection.readyState === 2) {
+    await mongoose.connection.asPromise();
+    return mongoose.connection.readyState === 1;
   }
 
   try {
     mongoose.set('strictQuery', true);
     await mongoose.connect(uri, {
-      serverSelectionTimeoutMS: 5000,
+      serverSelectionTimeoutMS: 8000,
+      bufferCommands: false,
     });
     console.log('[db] Connected to MongoDB');
     return true;
   } catch (error) {
-    console.warn(
-      `[db] Could not connect to MongoDB (${error.message}). ` +
-        'Falling back to in-memory seed data.'
-    );
+    console.warn(`[db] Could not connect to MongoDB: ${error.message}`);
     return false;
   }
 }

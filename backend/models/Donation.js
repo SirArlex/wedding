@@ -78,7 +78,7 @@ const donationSchema = new mongoose.Schema(
 
 // Efficient lookups by weddingId + status for the Gift Wall
 donationSchema.index({ weddingId: 1, status: 1 });
-donationSchema.index({ reference: 1 });
+// Note: reference already has a unique index from the field definition above — no extra index needed.
 
 const Donation = mongoose.model('Donation', donationSchema);
 export default Donation;
