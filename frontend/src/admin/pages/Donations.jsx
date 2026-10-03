@@ -41,9 +41,9 @@ export default function Donations() {
     donationsApi
       .list(weddingId, params)
       .then((res) => {
-        setItems(res.data.donations);
-        setTotalPages(res.data.totalPages);
-        setTotal(res.data.total);
+        setItems(res.data ?? []);
+        setTotalPages(Math.ceil((res.total ?? 0) / 20) || 1);
+        setTotal(res.total ?? 0);
       })
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));

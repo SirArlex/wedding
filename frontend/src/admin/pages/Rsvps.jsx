@@ -36,9 +36,9 @@ export default function Rsvps() {
     rsvpsApi
       .list(weddingId, params)
       .then((res) => {
-        setRsvps(res.data.rsvps);
-        setTotalPages(res.data.totalPages);
-        setTotal(res.data.total);
+        setRsvps(res.data ?? []);
+        setTotalPages(Math.ceil((res.total ?? 0) / 20) || 1);
+        setTotal(res.total ?? 0);
       })
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
