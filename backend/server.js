@@ -13,19 +13,32 @@ import { notFound, errorHandler } from './middleware/errorHandler.js';
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+// ── Trust Vercel's proxy (required for express-rate-limit) ────
+app.set('trust proxy', 1);
+
 // ── Security headers ─────────────────────────────────────────
 app.use(helmet());
 
 // ── CORS ─────────────────────────────────────────────────────
+// Always allow the production frontend plus localhost for dev.
+// We list the production URL explicitly so it works even if the
+// CLIENT_ORIGIN env var is missing or misconfigured on Vercel.
+const ALLOWED_ORIGINS = [
+  'https://wedding-client-tau.vercel.app',
+  'http://localhost:5173',
+  'http://localhost:5000',
+  ...(process.env.CLIENT_ORIGIN
+    ? process.env.CLIENT_ORIGIN.split(',').map((o) => o.trim())
+    : []),
+];
+
 app.use(
   cors({
     origin: (origin, callback) => {
       // Allow requests with no origin (curl, Postman, server-to-server)
       if (!origin) return callback(null, true);
-      const allowed = (process.env.CLIENT_ORIGIN || 'http://localhost:5173')
-        .split(',')
-        .map((o) => o.trim());
-      if (allowed.includes(origin)) return callback(null, true);
+      if (ALLOWED_ORIGINS.includes(origin)) return callback(null, true);
+      console.warn(`[cors] blocked origin: ${origin}`);
       callback(new Error(`CORS: origin ${origin} not allowed`));
     },
     credentials: true,
